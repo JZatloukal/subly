@@ -1,0 +1,357 @@
+/* =============================================================================
+   LAYOUT.CSS
+   =============================================================================
+   Layout a struktura stránky
+   ============================================================================= */
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 2em auto;
+    padding: 0 2em;
+    background: transparent;
+}
+
+/* Content box */
+.content-box {
+    background: #fff;
+    padding: 2em;
+    border-radius: 24px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    margin-top: 2em;
+}
+
+/* Summary */
+.summary {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 2em;
+}
+
+.summary-box {
+    flex: 1;
+    background: #f9f9fb;
+    border-radius: 16px;
+    box-shadow: 8px 8px 20px #e0e0e0, -8px -8px 20px #ffffff;
+    padding: 1.5em;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.summary-box:hover {
+    transform: scale(1.01);
+}
+
+.summary-box:nth-child(1) {
+    border-top: 4px solid #b7e4c7; /* světle zelená */
+}
+
+.summary-box:nth-child(2) {
+    border-top: 4px solid #a7c7e7; /* pastelově modrá */
+}
+
+.summary-box:nth-child(3) {
+    border-top: 4px solid #f7d9a1; /* jemně oranžová */
+}
+
+/* Header */
+.app-header {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.05);  /* decentní průhlednost */
+    backdrop-filter: blur(8px);             /* lehký rozostřující efekt */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);  /* decentní oddělení */
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    padding: 0.5em 1.5em;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    z-index: 998;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 80px;
+    display: block;
+    margin-left: 10px;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(to right, #ffffff, #cce6ff); /* světlejší kontrast k pozadí */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+
+/* Side menu */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 260px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    padding: 2em 1em;
+    transition: right 0.3s ease-in-out;
+    z-index: 999;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+.side-menu.show {
+    right: 0;
+}
+
+.side-menu-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 1em;
+}
+
+.side-menu-items li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8em 1em;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #333;
+    transition: background 0.2s;
+    position: relative;
+}
+
+.side-menu-items li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 1em;
+    right: 1em;
+    height: 1px;
+    background: linear-gradient(to right, #ccc, #eee);
+    opacity: 0.7;
+}
+
+.side-menu-items li:last-child {
+    border-bottom: none;
+}
+
+.side-menu-items li:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.side-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-bottom: 2em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* User icon */
+.user-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: #333;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.user-icon:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* User button */
+.user-btn {
+    background: transparent;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    transition: background 0.2s;
+    flex: 1;
+    text-align: left;
+}
+
+/* Flash messages - styles moved to base.css */
+
+
+
+/* Header buttons */
+.header-buttons {
+    display: none !important;
+}
+
+.header-buttons.show {
+    display: flex !important;
+}
+
+.header-buttons .btn {
+    width: 100%;
+    text-align: left;
+    background: none;
+    color: #333;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 0.6em 1em;
+    transition: background 0.2s;
+    font-size: 13px;
+    border: none;
+}
+
+.header-buttons .btn:hover {
+    background: #f2f2f7;
+    color: #007aff;
+}
+
+/* Hamburger menu */
+.hamburger-menu {
+    position: fixed;
+    top: 1.25rem;
+    right: 1rem;
+    cursor: pointer;
+    z-index: 1001;
+    color: #333;
+    background: none;
+    border: none;
+    font-size: 24px;
+}
+
+.hamburger-icon {
+    font-size: 1.4em;
+}
+
+/* Menu actions */
+.menu-actions {
+    display: none;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu-actions.visible {
+    display: flex;
+}
+
+.menu-actions button {
+    background: #f5f5f5;
+    border: none;
+    padding: 0.4em 0.8em;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.menu-actions button:hover {
+    background: #e0e0e0;
+}
+
+/* Page title */
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+/* Menu slider */
+.menu-slider {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 260px;
+    height: 100%;
+    background: #ffffff;
+    box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+    padding: 2em 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+.menu-slider.show {
+    right: 0;
+}
+
+.menu-slider button {
+    background: #f4f4f4;
+    border: none;
+    padding: 0.7em 1em;
+    border-radius: 999px;
+    text-align: left;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.menu-slider button:hover {
+    background: #e0e0e0;
+    transform: translateX(4px);
+}
+
+/* Menu dropdown */
+.menu-dropdown {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    display: none;
+    flex-direction: column;
+    padding: 0.8em;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+.menu-dropdown.show {
+    display: flex;
+}
+
+.menu-dropdown button {
+    background: #f4f4f4;
+    border: none;
+    padding: 0.6em 1em;
+    border-radius: 999px;
+    text-align: left;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-bottom: 6px;
+}
+
+.menu-dropdown button:hover {
+    background: #e0e0e0;
+    transform: translateX(4px);
+}
+
+

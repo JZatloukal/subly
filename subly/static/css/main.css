@@ -1,0 +1,116 @@
+/* =============================================================================
+   MAIN-OPTIMIZED.CSS
+   =============================================================================
+   Optimalizovaný hlavní CSS soubor - pouze specifické styly pro Subly
+   ============================================================================= */
+
+/* Specifické styly pro Subly aplikaci */
+.gradient-text {
+    background: rgb(44, 62, 80);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    font-size: 28px;
+}
+
+/* Summary boxes */
+.summary {
+    display: flex;
+    gap: 1em;
+    margin-bottom: 3em;
+}
+
+.summary-box {
+    flex: 1;
+    background: #f9f9fb;
+    border-radius: 16px;
+    box-shadow: 8px 8px 20px #e0e0e0, -8px -8px 20px #ffffff;
+    padding: 1.5em;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.summary-box:hover {
+    transform: scale(1.01);
+}
+
+.summary-box:nth-child(1) { 
+    border-top: 4px solid #b7e4c7; /* světle zelená */
+}
+
+.summary-box:nth-child(2) { 
+    border-top: 4px solid #a7c7e7; /* pastelově modrá */
+}
+
+.summary-box:nth-child(3) { 
+    border-top: 4px solid #f7d9a1; /* jemně oranžová */
+}
+
+/* Chart containers */
+.chart-container {
+    margin-top: 2em;
+    background: #fff;
+    padding: 1.5em 1.5em 2em;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Service icons */
+.service-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Side menu specific styles - removed to avoid conflicts with layout.css */
+
+/* Side menu items - removed to avoid conflicts with layout.css */
+
+/* Menu toggle - removed to avoid conflicts with layout.css */
+
+/* Header specific styles - removed to avoid conflicts with layout.css */
+
+/* Search box */
+.search-box {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    margin: 30px 0;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.search-box input[type="text"] {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: none;
+    background: #f5f7fb;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-box input[type="text"]:focus {
+    outline: none;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px #aac4ff;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .summary {
+        flex-direction: column;
+    }
+    
+    .search-box {
+        padding: 0 1rem;
+    }
+}

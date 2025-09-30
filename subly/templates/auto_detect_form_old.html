@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Automatická detekce předplatných - Subly</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auto-detect.css') }}?v=10">
+</head>
+<body>
+    <button id="hamburger-menu" class="hamburger-menu" onclick="toggleSideMenu()">
+        <div class="hamburger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </button>
+
+    <header class="app-header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Subly Logo">
+            <span class="logo-text">Subly</span>
+        </div>
+        <div class="header-buttons">
+            <button class="user-btn" onclick="window.location.href='/profile'">
+                <i class="fas fa-user-circle user-icon"></i>
+                {% if g.user %}
+                    {{ g.user.name }}
+                {% else %}
+                    Nepřihlášen
+                {% endif %}
+            </button>
+        </div>
+    </header>
+
+    <div id="sideMenu" class="side-menu">
+        <div class="side-menu-header">
+            <i class="fas fa-user-circle user-icon"></i>
+            {% if g.user %}
+                <button class="btn" onclick="window.location.href='/profile'">
+                    {{ g.user.name }}
+                </button>
+            {% else %}
+                <span>Nepřihlášen</span>
+            {% endif %}
+        </div>
+        <ul class="side-menu-items">
+            <li onclick="window.location.href='{{ url_for('index') }}'"><i class="fas fa-home"></i> Dashboard</li>
+            <li onclick="window.location.href='/export'"><i class="fas fa-file-csv"></i> Export CSV</li>
+            {% if g.user %}
+            <li onclick="window.location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Odhlásit se</li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="content-box">
+            <h1 class="page-title">Automatická detekce</h1>
+            <p class="page-subtitle">Automaticky najdi a načti svá předplatná</p>
+            <div class="status-container">
+                <div class="status-badge">🚧 Demo verze</div>
+            </div>
+
+            <div class="chart-container">
+                <h2>Jak to funguje?</h2>
+                <p>
+                    Automatická detekce je pokročilá funkce, kterou jsem připravil pro automatické načtení tvých aktivních předplatných 
+                    z různých zdrojů. Místo manuálního zadávání každého předplatného můžeš jednoduše zadat své údaje 
+                    a systém automaticky najde a načte všechna tvá aktivní předplatné.
+                </p>
+                <p>
+                    <strong>Jak to funguje:</strong> Systém se připojí k tvým účtům (Apple, Google, bankovní účty) 
+                    a analyzuje transakce, aby identifikoval opakující se platby za předplatné služby.
+                </p>
+            </div>
+
+            <div class="chart-container">
+                <h2>Vyzkoušej demo verzi</h2>
+                <p>
+                    Aktuálně mám připravenou <strong>demo verzi</strong> s ukázkovými daty. Můžeš si vyzkoušet, 
+                    jak bude funkce vypadat a fungovat, když bude plně implementována.
+                </p>
+                <p>
+                    Demo obsahuje ukázková předplatná (Spotify, Netflix, iCloud, YouTube Premium, Adobe, Microsoft 365, Disney+, Apple Music) 
+                    a ukazuje celý proces od detekce až po přidání do tvého seznamu.
+                </p>
+                <form method="POST" action="{{ url_for('auto_detect') }}" class="demo-form" id="demoForm">
+                    <button type="submit" class="btn-analyze" id="demoButton">
+                        <span id="buttonText">Spustit demo detekci</span>
+                        <span id="loadingSpinner" class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin"></i> Načítám...
+                        </span>
+                    </button>
+                </form>
+                
+                <div id="demoProgress" class="demo-progress">
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-title">
+                                <div class="progress-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                Probíhá detekce...
+                            </div>
+                            <div class="progress-percentage" id="progressPercentage">0%</div>
+                        </div>
+                        
+                        <div class="progress-stats">
+                            <div class="stat-card">
+                                <div class="stat-number" id="transactionsCount">0</div>
+                                <div class="stat-label">Transakce</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="servicesCount">0</div>
+                                <div class="stat-label">Služby</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="subscriptionsCount">0</div>
+                                <div class="stat-label">Předplatná</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-bg">
+                                <div id="progressBar" class="progress-bar-fill"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-details">
+                            <div id="progressText" class="progress-text">Připojuji se k externím službám...</div>
+                            <div id="progressTime" class="progress-time">0s</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>Roadmapa vývoje</h2>
+                <p>
+                    Plánuji integraci s následujícími službami:
+                </p>
+                <div class="roadmap-grid">
+                    <div class="roadmap-item">
+                        Apple ID a App Store předplatná
+                    </div>
+                    <div class="roadmap-item">
+                        Google Play předplatná
+                    </div>
+                    <div class="roadmap-item">
+                        Bankovní účty
+                    </div>
+                    <div class="roadmap-item">
+                        PayPal a Stripe transakce
+                    </div>
+                    <div class="roadmap-item">
+                        E-mailové účty (Gmail, Outlook) pro faktury
+                    </div>
+                    <div class="roadmap-item">
+                        API integrace s populárními službami
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-section">
+                <a href="{{ url_for('index') }}" class="back-button">
+                    ← Zpět na dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSideMenu() {
+            const menu = document.getElementById('sideMenu');
+            menu.classList.toggle('show');
+        }
+
+        window.addEventListener('click', function(event) {
+            const menu = document.getElementById('sideMenu');
+            const toggle = document.querySelector('.hamburger-menu');
+            if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Demo loading animation
+        document.getElementById('demoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const button = document.getElementById('demoButton');
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const demoProgress = document.getElementById('demoProgress');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            // Show loading state
+            buttonText.style.display = 'none';
+            loadingSpinner.style.display = 'inline';
+            button.disabled = true;
+            demoProgress.style.display = 'block';
+            
+            // Smooth progress animation
+            let currentProgress = 0;
+            const targetProgress = 100;
+            const duration = 4000; // 4 seconds total
+            const stepDuration = 50; // Update every 50ms
+            const totalSteps = duration / stepDuration;
+            const progressIncrement = targetProgress / totalSteps;
+            
+            // Progress steps with detailed stats
+            const steps = [
+                { progress: 15, text: 'Připojuji se k externím službám...', transactions: 0, services: 0, subscriptions: 0 },
+                { progress: 25, text: 'Načítám bankovní transakce...', transactions: 1247, services: 0, subscriptions: 0 },
+                { progress: 40, text: 'Analyzuji Apple ID účty...', transactions: 1247, services: 3, subscriptions: 0 },
+                { progress: 55, text: 'Kontroluji Google Play předplatná...', transactions: 1247, services: 5, subscriptions: 0 },
+                { progress: 70, text: 'Skenuji bankovní transakce...', transactions: 1247, services: 8, subscriptions: 0 },
+                { progress: 85, text: 'Detekuji opakující se platby...', transactions: 1247, services: 8, subscriptions: 3 },
+                { progress: 95, text: 'Dokončuji analýzu...', transactions: 1247, services: 8, subscriptions: 5 },
+                { progress: 100, text: 'Přesměrovávám na výsledky...', transactions: 1247, services: 8, subscriptions: 8 }
+            ];
+            
+            let currentStepIndex = 0;
+            let startTime = Date.now();
+            
+            function updateProgress() {
+                currentProgress += progressIncrement;
+                
+                // Update progress bar and percentage
+                progressBar.style.width = Math.min(currentProgress, targetProgress) + '%';
+                document.getElementById('progressPercentage').textContent = Math.round(Math.min(currentProgress, targetProgress)) + '%';
+                
+                // Update stats and text based on current progress
+                if (currentStepIndex < steps.length && currentProgress >= steps[currentStepIndex].progress) {
+                    const step = steps[currentStepIndex];
+                    progressText.textContent = step.text;
+                    
+                    // Animate stats
+                    animateNumber('transactionsCount', step.transactions);
+                    animateNumber('servicesCount', step.services);
+                    animateNumber('subscriptionsCount', step.subscriptions);
+                    
+                    currentStepIndex++;
+                }
+                
+                // Update time
+                const elapsed = Math.round((Date.now() - startTime) / 1000);
+                document.getElementById('progressTime').textContent = elapsed + 's';
+                
+                if (currentProgress < targetProgress) {
+                    setTimeout(updateProgress, stepDuration);
+                } else {
+                    // Complete - submit the form
+                    setTimeout(() => {
+                        const form = document.getElementById('demoForm');
+                        form.submit();
+                    }, 800);
+                }
+            }
+            
+            function animateNumber(elementId, targetValue) {
+                const element = document.getElementById(elementId);
+                const currentValue = parseInt(element.textContent) || 0;
+                const increment = Math.ceil((targetValue - currentValue) / 10);
+                
+                if (currentValue < targetValue) {
+                    element.textContent = Math.min(currentValue + increment, targetValue);
+                    setTimeout(() => animateNumber(elementId, targetValue), 50);
+                }
+            }
+            
+            // Start smooth progress animation
+            setTimeout(updateProgress, 300);
+        });
+
+    </script>
+</body>
+</html>

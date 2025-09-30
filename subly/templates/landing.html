@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subly - Najděte skrytá předplatná</title>
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}?v=71">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}?v=6">
+    
+</head>
+<body>
+    <!-- Particles Background -->
+    <div class="particles-container"></div>
+    
+    <!-- Main Content -->
+    <main class="landing-main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title">
+                            Najděte všechna skrytá předplatná
+                            <span class="highlight">ve vašich bankovních výpisech</span>
+                        </h1>
+                        
+                        <p class="hero-description">
+                            Subly analyzuje vaše transakce a automaticky identifikuje opakující se platby. 
+                            Ušetřete peníze na zapomenutých službách.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="{{ url_for('auto_detect') }}" class="btn btn-primary">
+                                <i class="fas fa-upload"></i>
+                                Vyzkoušet Subly
+                            </a>
+                            <a href="{{ url_for('login') }}" class="btn btn-secondary">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Přihlásit se
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Computer Mockup -->
+                    <div class="hero-visual">
+                        <div class="computer-mockup">
+                            <div class="screen">
+                                <div class="screen-content">
+                                    <!-- Upload Animation Demo -->
+                                    <div class="upload-demo">
+                                        <!-- Step 1: Drag & Drop Zone -->
+                                        <div class="demo-step step-upload active">
+                                            <div class="upload-zone">
+                                                <div class="upload-icon">
+                                                    <i class="fas fa-cloud-upload-alt"></i>
+                                                </div>
+                                                <p class="upload-text">Přetáhněte CSV soubor</p>
+                                                <div class="upload-file">
+                                                    <i class="fas fa-file-csv"></i>
+                                                    <span>vypis_2025-09.csv</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step 2: Processing -->
+                                        <div class="demo-step step-processing">
+                                            <div class="processing-content">
+                                                <div class="processing-icon">
+                                                    <i class="fas fa-cog fa-spin"></i>
+                                                </div>
+                                                <p class="processing-text">Analyzuji transakce...</p>
+                                                <div class="progress-bar">
+                                                    <div class="progress-fill"></div>
+                                                </div>
+                                                <div class="processing-dots">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Step 3: Results -->
+                                        <div class="demo-step step-results">
+                                            <div class="results-content">
+                                                <div class="results-header">
+                                                    <h3>Nalezená předplatná</h3>
+                                                    <span class="results-count">3 služby</span>
+                                                </div>
+                                                
+                                                <!-- Summary boxes like real Subly -->
+                                                <div class="mockup-summary">
+                                                    <div class="mockup-summary-box">
+                                                        <h3>Měsíční výdaje</h3>
+                                                        <p>1,077 Kč</p>
+                                                    </div>
+                                                    <div class="mockup-summary-box">
+                                                        <h3>Roční výdaje</h3>
+                                                        <p>12,924 Kč</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="total-savings">
+                                                    <span class="savings-label">Měsíční úspora:</span>
+                                                    <span class="savings-amount">1,077 Kč</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="computer-base"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}?v=3"></script>
+    <script src="{{ url_for('static', filename='js/toast.js') }}?v=3"></script>
+    
+    <!-- Upload Demo Animation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.demo-step');
+            let currentStep = 0;
+            
+            function showStep(stepIndex) {
+                steps.forEach((step, index) => {
+                    step.classList.toggle('active', index === stepIndex);
+                });
+            }
+            
+            function nextStep() {
+                currentStep = (currentStep + 1) % steps.length;
+                showStep(currentStep);
+            }
+            
+            // Start with first step
+            showStep(0);
+            
+            // Auto-advance animation
+            setTimeout(() => {
+                nextStep(); // Go to processing
+                setTimeout(() => {
+                    nextStep(); // Go to results
+                    setTimeout(() => {
+                        // Loop back to start
+                        nextStep();
+                        // Restart the cycle
+                        setTimeout(arguments.callee, 6000);
+                    }, 6000);
+                }, 5000);
+            }, 4000);
+        });
+    </script>
+</body>
+</html>

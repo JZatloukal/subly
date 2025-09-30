@@ -1,0 +1,250 @@
+/* =============================================================================
+   UPLOAD-PREVIEW.CSS
+   =============================================================================
+   Styly pro stránku náhledu nahrání předplatných
+   ============================================================================= */
+
+/* Základní styly pro body - dědí z base.css */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-container {
+    background-color: #fff;
+    padding: 2.5em 1.5em 3.5em 1.5em;
+    border-radius: 24px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    width: 100%;
+    margin: 2em auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1.page-title {
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 0.6em;
+    color: #2e2e2e;
+    text-align: center;
+}
+
+.subtitle {
+    margin-top: 0.3em;
+    margin-bottom: 1.2em;
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 500;
+    color: #555;
+    text-align: center;
+    max-width: 540px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+thead tr {
+    background-color: #f4f4f7;
+    color: #333;
+}
+
+thead th {
+    padding: 0.75em 1em;
+    user-select: none;
+}
+
+thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+thead th:last-child {
+    border-top-right-radius: 12px;
+}
+
+tbody tr {
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: #f3f6fc;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+tbody td {
+    border-bottom: none;
+    padding: 1em;
+    vertical-align: middle;
+    color: #444;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+thead th:first-child,
+tbody td:first-child {
+    text-align: center;
+    width: 40px;
+}
+
+tbody td:nth-child(2) {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+tbody td:nth-child(3),
+tbody td:nth-child(6) {
+    font-weight: 500;
+    color: #333;
+}
+
+tbody td:last-child {
+    background-color: #f9f9f9;
+    border-radius: 6px;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.1);
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0;
+    margin-right: 0.5em;
+}
+
+form {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    width: 100%;
+}
+
+/* Scrollbar for table if needed */
+tbody {
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
+}
+
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Remove default form checkbox margin in Firefox */
+input[type="checkbox"]::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+
+.btn-analyze {
+    background: rgb(44, 62, 80);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 1em;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    margin-top: 1em;
+}
+
+.btn-analyze:hover {
+    transform: translateY(-1px);
+}
+
+.subscription-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75em;
+    max-height: 450px;
+    overflow-y: auto;
+    margin-bottom: 1.5em;
+}
+
+.subscription-row {
+    display: flex;
+    align-items: flex-start;
+    background: #fff;
+    padding: 1em;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    gap: 1em;
+}
+
+.checkbox-column {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-column input[type="checkbox"] {
+    transform: scale(1.2);
+    margin: 0;
+    cursor: pointer;
+}
+
+.subscription-main {
+    flex-grow: 1;
+}
+
+.subscription-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #111;
+}
+
+.subscription-sub {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.2em;
+}
+
+.subscription-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.2em;
+    font-size: 0.85rem;
+    color: #444;
+    text-align: right;
+}
+
+.detail-item.notes {
+    color: #777;
+    font-style: italic;
+}

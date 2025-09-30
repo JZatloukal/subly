@@ -1,0 +1,47 @@
+# Subly Environment Variables pro Railway
+# Kopíruj tento soubor jako .env a nastav správné hodnoty
+
+# ===========================================
+# BEZPEČNOSTNÍ NASTAVENÍ
+# ===========================================
+# POVINNÉ - Vygeneruj silný secret key pro produkci
+SECRET_KEY=your-super-secret-key-here-change-in-production
+
+# ===========================================
+# DATABÁZE
+# ===========================================
+# Pro vývoj (SQLite)
+# DATABASE_URL=sqlite:///dev_database.db
+
+# Pro produkci (PostgreSQL) - Railway poskytne tuto URL
+# DATABASE_URL=postgresql://username:password@host:port/database
+
+# ===========================================
+# E-MAIL (volitelné - pro budoucí notifikace)
+# ===========================================
+# MAIL_SERVER=smtp.gmail.com
+# MAIL_PORT=587
+# MAIL_USE_TLS=true
+# MAIL_USERNAME=your-email@gmail.com
+# MAIL_PASSWORD=your-app-password
+
+# ===========================================
+# APLIKACE
+# ===========================================
+# Konfigurace prostředí (development/production/postgresql)
+FLASK_ENV=development
+
+# ===========================================
+# RAILWAY DEPLOYMENT
+# ===========================================
+# Railway automaticky nastaví tyto proměnné:
+# - DATABASE_URL (PostgreSQL connection string)
+# - PORT (port pro aplikaci)
+# - RAILWAY_STATIC_URL (pro statické soubory)
+
+# ===========================================
+# PŘÍKLAD PRO RAILWAY
+# ===========================================
+# SECRET_KEY=your-production-secret-key
+# FLASK_ENV=postgresql
+# DATABASE_URL=postgresql://postgres:password@containers-us-west-xxx.railway.app:5432/railway

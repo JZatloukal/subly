@@ -1,0 +1,236 @@
+/* =============================================================================
+   CATEGORIES.CSS
+   =============================================================================
+   Kategorie a jejich zobrazení
+   ============================================================================= */
+
+/* Category overview */
+.category-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1em;
+    margin-top: 1em;
+}
+
+/* Category box */
+.category-box {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 1em;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.category-box:hover {
+    transform: translateY(-2px);
+}
+
+.category-icon {
+    font-size: 1.5em;
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+.category-name {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.2em;
+}
+
+.category-amount {
+    color: #555;
+    font-size: 0.9em;
+}
+
+/* Upcoming payments */
+.upcoming-payments {
+    margin-top: 1em;
+}
+
+.payment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8em 1em;
+    border-bottom: 1px solid #eee;
+}
+
+.payment-name {
+    flex: 1;
+    text-align: left;
+    font-weight: 500;
+}
+
+.payment-date {
+    flex: 1;
+    text-align: center;
+    color: #888;
+    font-size: 0.9em;
+}
+
+.payment-price {
+    flex: 1;
+    text-align: right;
+    font-weight: 600;
+    color: #007aff;
+}
+
+/* Category bars container */
+.category-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+/* Category bar item */
+.category-bar-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75em 1em;
+    border-radius: 8px;
+    min-height: 48px;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 
+                inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Category info */
+.category-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75em;
+}
+
+/* Category icon */
+.category-icon {
+    color: #a1c4fd;
+    font-size: 18px;
+    width: 20px;
+}
+
+/* Category name */
+.category-name {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Progress bar container */
+.progress-container {
+    flex: 3;
+    margin: 0 1em;
+}
+
+/* Progress bar background */
+.progress-bg {
+    background: #e0e0e0;
+    height: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Progress bar fill */
+.progress-fill {
+    background: linear-gradient(to right, #4a6b8a, #3a5a7a);
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Category amount */
+.category-amount {
+    flex: 0;
+    min-width: 60px;
+    text-align: right;
+}
+
+.category-amount strong {
+    color: #333;
+    font-size: 14px;
+}
+
+/* Empty state */
+.category-empty,
+.no-payments {
+    text-align: center;
+    color: #999;
+    padding: 2em;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* Category tags */
+.category-tag {
+    display: inline-block;
+    padding: 0.3em 0.6em;
+    border-radius: 6px;
+    font-size: 0.8em;
+    font-weight: 500;
+    background: #fff;
+    border: 0.5px solid transparent;
+    color: #555;
+    text-align: center;
+    min-width: 60px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.category-tag:hover {
+    border-color: #e8e8e8;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    cursor: default;
+}
+
+/* Specific category colors */
+.category-tag.zabava {
+    border: none;
+    color: inherit;
+}
+
+.category-tag.zabava::before {
+    content: "";
+}
+
+.category-tag.hudba {
+    border: none;
+    color: inherit;
+}
+
+.category-tag.hudba::before {
+    content: "";
+}
+
+.category-tag.uloziste {
+    border: none;
+    color: inherit;
+}
+
+.category-tag.uloziste::before {
+    content: "";
+}
+
+.category-tag.produktivita {
+    border: none;
+    color: inherit;
+}
+
+.category-tag.produktivita::before {
+    content: "";
+}
+
+.category-tag.ai {
+    border: none;
+    color: inherit;
+}
+
+.category-tag.ai::before {
+    content: "";
+}
+
+.category-tag.ostatni {
+    border: none;
+    color: inherit;
+}
+
+.category-tag.ostatni::before {
+    content: "";
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Můj profil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}?v=6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}?v=6">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="profile-page">
+
+
+    <div class="profile-container">
+        
+        <div class="profile-header">
+            <i class="fas fa-user-circle avatar"></i>
+            <h2>{{ user.name or user.username }}</h2>
+        </div>
+        <form method="POST" action="/profile">
+            <div class="profile-field">
+                <label for="username">Uživatelské jméno</label>
+                <input type="text" id="username" name="name" value="{{ user.username }}" required>
+            </div>
+            <div class="profile-field">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" disabled>
+            </div>
+            <div class="profile-field">
+                <label for="current_password">Současné heslo</label>
+                <input type="password" id="current_password" name="current_password" placeholder="Zadejte své současné heslo">
+            </div>
+            <div class="profile-field">
+                <label for="new_password">Nové heslo</label>
+                <input type="password" id="new_password" name="new_password" placeholder="Zadejte nové heslo">
+                <div id="password-validation" class="password-validation"></div>
+            </div>
+            <div class="profile-buttons">
+                <button class="btn-save" type="submit">Uložit změny</button>
+            </div>
+            <a href="{{ url_for('index') }}" class="back-button">
+  ← Zpět na přehled
+</a>
+        </form>
+    </div>
+
+    <script>
+    const newPasswordInput = document.getElementById('new_password');
+    const validationBox = document.getElementById('password-validation');
+
+    function validatePasswordLive(password) {
+        const minLength = /.{8,}/;
+        const hasUpper = /[A-Z]/;
+        const hasLower = /[a-z]/;
+        const hasNumber = /\d/;
+
+        const errors = [];
+        if (!minLength.test(password)) errors.push("alespoň 8 znaků");
+        if (!hasUpper.test(password)) errors.push("velké písmeno");
+        if (!hasLower.test(password)) errors.push("malé písmeno");
+        if (!hasNumber.test(password)) errors.push("číslici");
+
+        if (errors.length === 0) {
+            validationBox.style.color = "#2b7a4b";
+            validationBox.innerText = "Heslo je v pořádku.";
+        } else {
+            validationBox.style.color = "#cc0000";
+            validationBox.innerText = "Heslo musí obsahovat: " + errors.join(", ");
+        }
+    }
+
+    newPasswordInput.addEventListener("input", function() {
+        validatePasswordLive(this.value);
+    });
+  </script>
+
+  <!-- Toast Notification System -->
+  <script src="{{ url_for('static', filename='js/toast.js') }}?v=2"></script>
+
+  <!-- Particle System -->
+  <script src="{{ url_for('static', filename='js/particles.js') }}?v=4"></script>
+
+</body>
+</html>

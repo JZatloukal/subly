@@ -1,0 +1,252 @@
+/* Profile page specific styles */
+
+/* Back menu */
+.back-menu {
+    position: absolute;
+    top: 1.5em;
+    left: 1.5em;
+    font-size: 1.4em;
+    color: white;
+    text-decoration: none;
+    z-index: 5;
+    opacity: 0.85;
+}
+
+.back-menu:hover {
+    opacity: 1;
+}
+
+/* Profile page body */
+body.profile-page {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: rgb(44, 62, 80);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Page title */
+.page-title {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #111;
+    text-align: center;
+    margin-bottom: 0.4em;
+}
+
+/* Profile container */
+.profile-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 2.5em 2em;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+/* Profile header */
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    margin-bottom: 1.5em;
+}
+
+/* Avatar - matching sidebar style */
+.avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: #333 !important;
+    font-size: 64px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.avatar:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Profile header text */
+.profile-header h2 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #111;
+    margin: 0;
+}
+
+.user-fullname {
+    font-size: 0.95em;
+    color: #333;
+    margin-top: -0.4em;
+    opacity: 0.75;
+}
+
+/* Profile form fields */
+.profile-field {
+    margin-bottom: 1em;
+}
+
+.profile-field label {
+    display: block;
+    font-weight: 500;
+    font-size: 0.9em;
+    margin-bottom: 0.25em;
+    color: #333;
+}
+
+.profile-field input {
+    padding: 0.9em;
+    font-size: 15px;
+    border: 1px solid #e5e5ea;
+    border-radius: 12px;
+    background-color: #f2f2f7;
+    width: 100%;
+    transition: border-color 0.2s, background-color 0.2s;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+.profile-field input:focus {
+    outline: none;
+    border-color: #ccc;
+    background-color: #fff;
+}
+
+/* Password wrapper */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 2.5em;
+}
+
+.password-wrapper i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Profile buttons */
+.profile-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6em;
+    margin-top: 2.5em;
+    padding: 0 0.3em;
+}
+
+.profile-buttons button {
+    flex: 1;
+    padding: 0.85em 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    height: 45px;
+    cursor: pointer;
+}
+
+.btn-save {
+    background: rgb(44, 62, 80);
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-save:hover {
+    transform: translateY(-1px);
+}
+
+.profile-buttons .btn-delete {
+    background-color: #f7f7f7;
+    color: #333;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.profile-buttons .btn-delete:hover {
+    background-color: #e8e8e8;
+    transform: translateY(-1px);
+}
+
+/* Hamburger menu */
+.hamburger-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.hamburger-menu a {
+    font-size: 1.5em;
+    color: white;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.hamburger-menu a:hover {
+    opacity: 1;
+}
+
+/* Back button */
+.back-button {
+    display: block;
+    width: calc(100%-10px);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px 16px;
+    background-color: #f7f7f7;
+    color: #333;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: transparent;
+    text-align: center;
+    margin-top: 1em;
+    transition: all 0.2s;
+    font-size: 15px;
+}
+
+
+/* Flash messages - styles moved to base.css */
+
+/* Password validation */
+.password-validation {
+    font-size: 0.8em;
+    margin-top: 0.3em;
+    color: #cc0000;
+}
+
+/* Animations */
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        margin: 0;
+        padding: 0;
+        height: 0;
+    }
+}

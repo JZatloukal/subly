@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subly – Správa předplatného</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}?v=6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}?v=6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/categories.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modals.css') }}?v=7">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}?v=18">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}?v=6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit-modal.css') }}?v=5">
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Subly Logo">
+            <span class="logo-text">Subly</span>
+        </div>
+    </header>
+
+
+    <button id="hamburger-menu" class="hamburger-menu" onclick="toggleSideMenu()">
+        <span class="hamburger-icon">☰</span>
+    </button>
+
+  <div id="sideMenu" class="side-menu">
+      <div class="side-menu-header">
+          <i class="fas fa-user-circle user-icon"></i>
+          {% if g.user %}
+            <button class="btn user-btn" onclick="window.location.href='/profile'">
+              {{ g.user.name }}
+            </button>
+          {% else %}
+            <span>Nepřihlášen</span>
+          {% endif %}
+      </div>
+      <ul class="side-menu-items">
+          <li onclick="openModal('uploadModal')"><i class="fas fa-upload"></i> Nahrát výpis</li>
+          <li onclick="openModal('addModal')"><i class="fas fa-plus-circle"></i> Přidat</li>
+          <li onclick="window.location.href='/export'"><i class="fas fa-file-csv"></i> Export CSV</li>
+          <li onclick="window.location.href='/auto-detect'"><i class="fas fa-magic"></i> Automatická detekce</li>
+          {% if g.user %}
+          <li onclick="window.location.href='/logout'"><i class="fas fa-sign-out-alt"></i> Odhlásit se</li>
+          {% endif %}
+      </ul>
+  </div>
+
+
+    <div class="container">
+        <div class="content-box">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if category in ['success', 'warning', 'error'] %}
+      <div class="flash-message {{ category }}">
+        {{ message }}
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<script>
+// Remove flash messages after animation completes
+  document.addEventListener('DOMContentLoaded', function() {
+      // Flash messages cleanup
+      const flashMessages = document.querySelectorAll('.flash-message');
+      flashMessages.forEach(function(message) {
+          // Remove element after animation completes (2.5s delay + 0.5s animation = 3s total)
+          setTimeout(function() {
+              if (message.parentNode) {
+                  message.parentNode.removeChild(message);
+              }
+          }, 3000);
+      });
+      
+      // Set progress bar widths from data-width attributes
+      const progressBars = document.querySelectorAll('.progress-fill[data-width]');
+      progressBars.forEach(function(bar) {
+          const width = bar.getAttribute('data-width');
+          bar.style.width = width + '%';
+      });
+  });
+
+  // Modern notification system
+  function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification notification-${type}`;
+      notification.textContent = message;
+      
+      // Add to page
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => notification.classList.add('show'), 100);
+      
+      // Auto remove after 4 seconds
+      setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+              if (notification.parentNode) {
+                  notification.parentNode.removeChild(notification);
+              }
+          }, 300);
+      }, 4000);
+  }
+</script>
+
+            <div class="summary">
+                <div class="summary-box">
+                    <h2>Měsíční výdaje</h2>
+                    <p>{{ monthly_total }} Kč</p>
+                </div>
+                <div class="summary-box">
+                    <h2>Roční výdaje</h2>
+                    <p>{{ yearly_total }} Kč</p>
+                </div>
+                <div class="summary-box">
+                    <h2>Počet služeb</h2>
+                    <p>{{ subscriptions|length }}</p>
+                </div>
+            </div>
+
+            {% if subscriptions|length > 2 %}
+            <div class="search-box full-width-box">
+              <input type="text" id="searchInput" name="search" placeholder="Hledat předplatné...">
+            </div>
+            {% endif %}
+
+<script>
+
+  document.getElementById("searchButton")?.addEventListener("click", function() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+      const nameCell = row.querySelector("td:nth-child(2)");
+      const text = nameCell?.textContent.toLowerCase() || "";
+      row.style.display = text.includes(query) ? "" : "none";
+    });
+  });
+  document.getElementById("searchInput")?.addEventListener("keyup", function() {
+    const query = this.value.toLowerCase();
+    const rows = document.querySelectorAll("tbody tr");
+  
+    rows.forEach(row => {
+      const nameCell = row.querySelector("td:nth-child(2)");
+      const text = nameCell?.textContent.toLowerCase() || "";
+      row.style.display = text.includes(query) ? "" : "none";
+    });
+  });
+
+  // Edit modal functionality
+  let currentEditId = null;
+
+  function openEditModal(subscriptionId) {
+    // Find the edit button with the subscription data
+    const editBtn = document.querySelector(`[data-id="${subscriptionId}"]`);
+    if (!editBtn) return;
+    
+    // Fill form with current data from data attributes
+    document.getElementById('edit-name').value = editBtn.dataset.name || '';
+    document.getElementById('edit-price').value = editBtn.dataset.price || '';
+    document.getElementById('edit-billing-cycle').value = editBtn.dataset.billingCycle || '';
+    document.getElementById('edit-category').value = editBtn.dataset.category || '';
+    document.getElementById('edit-start-date').value = editBtn.dataset.startDate || '';
+    document.getElementById('edit-notes').value = editBtn.dataset.notes || '';
+    
+    currentEditId = subscriptionId;
+    const modal = document.getElementById('editModal');
+    
+    // Show modal using CSS class (consistent with closeModal)
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    // Clear any previous flash messages
+    document.getElementById('edit-flash-messages').innerHTML = '';
+  }
+
+  // Edit form submission - wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', function() {
+    const editForm = document.getElementById('edit-form');
+    
+    if (editForm) {
+      editForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    formData.append('id', currentEditId);
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Ukládám...';
+    submitBtn.disabled = true;
+    
+    fetch('/edit-subscription', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Close modal and reload page
+        closeModal('editModal');
+        location.reload();
+      } else {
+        // Show error message
+        showEditFlashMessage(data.message, 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showEditFlashMessage('Došlo k chybě při ukládání.', 'error');
+    })
+    .finally(() => {
+      // Restore button state
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    });
+  });
+  }
+  });
+
+  function showEditFlashMessage(message, type) {
+    const flashContainer = document.getElementById('edit-flash-messages');
+    flashContainer.innerHTML = `<div class="flash-message flash-${type}">${message}</div>`;
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      flashContainer.innerHTML = '';
+    }, 5000);
+  }
+</script>
+
+            <table>
+              <thead>
+                <tr>
+                  <th class="checkbox-header"><input type="checkbox" id="selectAll" title="Vybrat vše"></th>
+                  <th class="name-header">Název</th>
+                  <th class="price-header">Cena</th>
+                  <th class="frequency-header">Frekvence</th>
+                  <th class="category-header">Kategorie</th>
+                  <th class="start-header">Začátek</th>
+                  <th class="actions-header">Akce</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for s in subscriptions %}
+                <tr>
+                  <td class="checkbox-cell">
+                    <input type="checkbox" class="select-item" value="{{ s.id }}" title="Vybrat toto předplatné">
+                  </td>
+                  <td class="name-cell"><span class="table-text">{{ s.name }}</span></td>
+                  <td class="price-cell"><span class="table-text">{{ s.price }} Kč</span></td>
+                  <td class="frequency-cell"><span class="table-text">{{ s.billing_cycle }}</span></td>
+                  <td class="category-cell"><span class="category-tag {{ s.category|lower|replace(' ', '') }}">{{ s.category }}</span></td>
+                  <td class="start-cell"><span class="table-text">{{ s.start_date.strftime('%d.%m.%Y') if s.start_date else "-" }}</span></td>
+                  <td class="actions-cell">
+                    <div class="actions-container">
+                      <button class="icon-btn edit-btn" title="Upravit" data-id="{{ s.id }}" data-name="{{ s.name }}" data-price="{{ s.price }}" data-billing-cycle="{{ s.billing_cycle }}" data-category="{{ s.category }}" data-start-date="{{ s.start_date.strftime('%Y-%m-%d') if s.start_date else '' }}" data-notes="{{ s.notes }}" onclick="openEditModal('{{ s.id }}')"><i class="fas fa-pen"></i></button>
+                      <a href="{{ url_for('delete_subscription', id=s.id) }}" class="icon-btn delete" title="Smazat"><i class="fas fa-trash"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% if not subscriptions %}
+                <tr>
+                  <td colspan="7" class="text-center">
+                    <p class="category-empty">Žádná předplatná k zobrazení.</p>
+                  </td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+
+            <button id="btn-delete-selected-floating" title="Smazat vybrané" class="floating-delete-btn btn">
+              Smazat vybrané
+            </button>
+
+            <div class="chart-container">
+              <h2>Měsíční výdaje podle kategorií</h2>
+              <div class="category-bars">
+                {% if category_totals and category_totals.values()|list|length > 0 %}
+                {% set max_amount = category_totals.values()|max %}
+                {% for cat, amount in category_totals.items() %}
+                <div class="category-bar-item">
+                  <div class="category-info">
+                    <i class="fas fa-{{ 'film' if cat == 'Zábava' else
+                                     'music' if cat == 'Hudba' else
+                                     'cloud' if cat == 'Úložiště' else
+                                     'brain' if cat == 'AI' else
+                                     'clipboard' if cat == 'Produktivita' else
+                                     'box' }}" 
+                       class="category-icon"></i>
+                    <strong class="category-name">{{ cat }}</strong>
+                  </div>
+                  <div class="progress-container">
+                    <div class="progress-bg">
+                      <div class="progress-fill" data-width="{{ (amount / max_amount * 100)|round(0, 'ceil') }}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="category-amount">
+                    <strong>{{ "%.0f"|format(amount) }} Kč</strong>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="category-empty">Žádné kategorie k zobrazení.</p>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>Nadcházející platby</h2>
+                <div class="upcoming-payments">
+                    {% for s in subscriptions if s.next_payment %}
+                        <div class="payment-item">
+                            <span class="payment-name">{{ s.name }}</span>
+                            <span class="payment-date">{{ s.next_payment.strftime('%d.%m.%Y') if s.next_payment else '' }}</span>
+                            <span class="payment-price">{{ "%.0f"|format(s.price) }} Kč</span>
+                        </div>
+                    {% else %}
+                        <p class="no-payments">Žádné nadcházející platby nejsou naplánované.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <!-- Modal pro edit předplatného -->
+            <div id="editModal" class="modal hidden">
+                <div class="modal-content edit-modal">
+                    <span class="close" onclick="closeModal('editModal')">&times;</span>
+                    <div class="modal-wrapper">
+                        <h2 class="modal-title">Upravit předplatné</h2>
+                        
+                        <!-- Flash messages -->
+                        <div id="edit-flash-messages"></div>
+                        
+                        <form id="edit-form" class="modal-form">
+                            <div class="form-group">
+                                <label for="edit-name">Název služby</label>
+                                <input type="text" id="edit-name" name="name" placeholder="Např. Netflix, Spotify..." required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-price">Cena</label>
+                                    <input type="number" id="edit-price" name="price" step="0.01" placeholder="299.00" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="edit-billing-cycle">Frekvence</label>
+                                    <select id="edit-billing-cycle" name="billing_cycle">
+                                        <option value="měsíčně">Měsíčně</option>
+                                        <option value="ročně">Ročně</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="edit-category">Kategorie</label>
+                                    <input type="text" id="edit-category" name="category" placeholder="Hudba, Streamování...">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="edit-start-date">Datum začátku</label>
+                                    <input type="date" id="edit-start-date" name="start_date">
+                                </div>
+                                
+                                <div class="form-group form-group-wide">
+                                    <label for="edit-notes">Poznámky</label>
+                                    <textarea id="edit-notes" name="notes" placeholder="Doplňující informace..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-analyze">Uložit změny</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal pro výsledky automatické detekce -->
+            <div id="autoDetectResultsModal" class="modal hidden">
+              <div class="modal-content large">
+                <span class="close" onclick="closeModal('autoDetectResultsModal')">&times;</span>
+                <div class="modal-wrapper">
+                  <h2 class="modal-title center">
+                    Výsledky automatické detekce
+                  </h2>
+                  <p class="auto-detect-description">
+                    Zkontroluj, které služby jsme rozpoznali. Zaškrtni ty, které chceš uložit.
+                  </p>
+                  <form action="/auto-detect/save" method="POST">
+                    <div class="detected-subscription-list">
+                      {% for sub in detected_subscriptions %}
+                      <label class="detected-subscription-item">
+                        <span>{{ sub.name }} – {{ sub.price }} Kč / {{ sub.billing_cycle }}</span>
+                        <input type="checkbox" name="selected_subs" value='{{ detected_encoded[loop.index0] }}'>
+                      </label>
+                      {% else %}
+                      <p class="detected-empty">Žádné služby nebyly detekovány.</p>
+                      {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-analyze">Uložit vybrané záznamy</button>
+      
+                  </form>
+                </div>
+              </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+function openModal(id) {
+  document.getElementById(id).classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+  document.body.style.overflow = '';
+}
+    // Hamburger menu toggle (updated)
+    function toggleMenu() {
+        const slider = document.getElementById('menuSlider');
+        slider.classList.toggle('show');
+    }
+    window.onclick = function(event) {
+      // Close modals if click outside
+      const addModal = document.getElementById('addModal');
+      const uploadModal = document.getElementById('uploadModal');
+      const editModal = document.getElementById('editModal');
+      const autoDetectResultsModal = document.getElementById('autoDetectResultsModal');
+      
+      if (event.target === addModal) closeModal('addModal');
+      if (event.target === uploadModal) closeModal('uploadModal');
+      if (event.target === editModal) closeModal('editModal');
+      if (event.target === autoDetectResultsModal) closeModal('autoDetectResultsModal');
+      
+      // Close side menu if click outside
+      if (!event.target.closest('.menu-slider') && !event.target.matches('.hamburger-icon')) {
+          const slider = document.getElementById('menuSlider');
+          if (slider && slider.classList.contains('show')) {
+              slider.classList.remove('show');
+          }
+      }
+    };
+    </script>
+    <script>
+        function updateFloatingDeleteButtonVisibility() {
+            const selectedCheckboxes = document.querySelectorAll('.select-item:checked');
+            const deleteButton = document.getElementById('btn-delete-selected-floating');
+            if (deleteButton) {
+                deleteButton.style.display = selectedCheckboxes.length >= 2 ? 'block' : 'none';
+            }
+        }
+
+        document.querySelectorAll('.select-item').forEach(cb => {
+            cb.addEventListener('change', updateFloatingDeleteButtonVisibility);
+        });
+
+        document.getElementById('selectAll')?.addEventListener('change', function () {
+            const isChecked = this.checked;
+            const allCheckboxes = document.querySelectorAll('.select-item');
+            allCheckboxes.forEach(cb => cb.checked = isChecked);
+            updateFloatingDeleteButtonVisibility();
+        });
+        document.getElementById('btn-delete-selected-floating')?.addEventListener('click', function() {
+            const selected = Array.from(document.querySelectorAll('.select-item:checked')).map(cb => cb.value);
+            if (selected.length === 0) {
+                showNotification("Vyberte alespoň jedno předplatné.", "warning");
+                return;
+            }
+            if (confirm("Opravdu chcete smazat vybraná předplatná?")) {
+                fetch('/delete_selected', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids: selected })
+                }).then(() => location.reload());
+            }
+        });
+    </script>
+    <script>
+    document.getElementById('filterInput')?.addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            const nameCell = row.querySelector('td:nth-child(2)');
+            if (nameCell) {
+                const text = nameCell.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            }
+        });
+    });
+    </script>
+    <script>
+    document.getElementById('toggleAdvanced')?.addEventListener('click', function() {
+        const adv = document.getElementById('advancedTools');
+        adv.style.display = adv.style.display === 'none' ? 'block' : 'none';
+
+        const advancedCols = document.querySelectorAll('.advanced-col');
+        advancedCols.forEach(col => {
+            col.style.display = adv.style.display === 'block' ? '' : 'none';
+        });
+    });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const uploadInput = document.getElementById('upload-file-input');
+          const fileNameDisplay = document.getElementById('upload-file-name');
+          const successIcon = document.getElementById('upload-success-icon');
+        
+          if (uploadInput && fileNameDisplay) {
+            uploadInput.addEventListener('change', function () {
+              const fileName = this.files.length > 0 ? this.files[0].name : "Soubor nevybrán";
+              fileNameDisplay.textContent = fileName;
+              if (successIcon) {
+                successIcon.style.display = this.files.length > 0 ? 'inline' : 'none';
+              }
+            });
+          }
+        });
+        </script>
+    <script>
+    document.getElementById('selectAll')?.addEventListener('change', function() {
+        const items = document.querySelectorAll('.select-item');
+        items.forEach(cb => cb.checked = this.checked);
+    });
+
+    document.getElementById('btn-delete-selected')?.addEventListener('click', function() {
+        const selected = Array.from(document.querySelectorAll('.select-item:checked')).map(cb => cb.value);
+        if (selected.length === 0) {
+            showNotification("Vyberte alespoň jedno předplatné.", "warning");
+            return;
+        }
+        if (confirm("Opravdu chcete smazat vybraná předplatná?")) {
+            fetch('/delete_selected', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids: selected })
+            }).then(() => location.reload());
+        }
+    });
+
+    </script>
+    <!-- Removed entry overlay animation scripts -->
+<script>
+function toggleSideMenu() {
+    const menu = document.getElementById('sideMenu');
+    menu.classList.toggle('show');
+}
+
+window.addEventListener('click', function(event) {
+    const menu = document.getElementById('sideMenu');
+    const toggle = document.querySelector('.hamburger-menu');
+    if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+        menu.classList.remove('show');
+    }
+});
+</script>
+</body>
+    <!-- Modal pro přidání předplatného -->
+    <div id="addModal" class="modal hidden">
+        <div class="modal-content edit-modal">
+          <span class="close" onclick="closeModal('addModal')">&times;</span>
+          <div class="modal-wrapper">
+            <h2 class="modal-title">Přidat nové předplatné</h2>
+            
+            <form action="/add" method="POST" class="modal-form">
+                <div class="form-group">
+                    <label for="add-name">Název služby</label>
+                    <input type="text" id="add-name" name="name" placeholder="Např. Netflix, Spotify..." required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="add-price">Cena</label>
+                        <input type="number" id="add-price" name="price" step="0.01" placeholder="299.00" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="add-billing-cycle">Frekvence</label>
+                        <select id="add-billing-cycle" name="billing_cycle" required>
+                            <option value="měsíčně">Měsíčně</option>
+                            <option value="ročně">Ročně</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="add-category">Kategorie</label>
+                        <input type="text" id="add-category" name="category" placeholder="Hudba, Streamování...">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="add-start-date">Datum začátku</label>
+                        <input type="date" id="add-start-date" name="start_date">
+                    </div>
+                    
+                    <div class="form-group form-group-wide">
+                        <label for="add-notes">Poznámky</label>
+                        <textarea id="add-notes" name="notes" placeholder="Doplňující informace..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-analyze">Přidat předplatné</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    <!-- Modal pro nahrání výpisu -->
+    <div id="uploadModal" class="modal hidden">
+      <div class="modal-content edit-modal">
+        <span class="close" onclick="closeModal('uploadModal')">&times;</span>
+        <div class="modal-wrapper">
+          <h2 class="modal-title">Nahrát bankovní výpis</h2>
+          
+          <div class="form-group">
+            <p class="upload-description">
+              Podporovaný formát: CSV
+            </p>
+          </div>
+          
+          <form action="/upload" method="POST" enctype="multipart/form-data" class="modal-form">
+            <div class="form-group">
+              <label for="upload-file-input" class="upload-text-link" id="upload-zone">
+                <input type="file" id="upload-file-input" name="file" accept=".csv" required class="file-input">
+              </label>
+              <div class="file-status">
+                <span id="upload-file-name" class="file-name">Soubor nevybrán</span>
+                <span id="upload-success-icon" class="success-icon"></span>
+              </div>
+            </div>
+            
+            <div class="btn-group">
+              <button type="submit" class="btn btn-analyze">Analyzovat výpis</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drag & Drop Upload JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadZone = document.getElementById('upload-zone');
+        const fileInput = document.getElementById('upload-file-input');
+        const fileName = document.getElementById('upload-file-name');
+        const successIcon = document.getElementById('upload-success-icon');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        // Handle dropped files
+        uploadZone.addEventListener('drop', handleDrop, false);
+
+        // Handle click to select file
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        // Handle file selection
+        fileInput.addEventListener('change', handleFiles);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            uploadZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            uploadZone.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles({ target: { files: files } });
+        }
+
+        function handleFiles(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+                    fileName.textContent = file.name;
+                    successIcon.style.display = 'inline';
+                    fileName.style.color = '#10b981';
+                } else {
+                    fileName.textContent = 'Neplatný formát souboru';
+                    successIcon.style.display = 'none';
+                    fileName.style.color = '#ef4444';
+                }
+            }
+        }
+
+    });
+    </script>
+
+    <!-- Toast Notification System -->
+    <script src="{{ url_for('static', filename='js/toast.js') }}?v=2"></script>
+    
+    <!-- Particle System -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}?v=4"></script>
+
+</body>
+</html>

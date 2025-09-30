@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload-preview.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}?v=6">
+    <title>Návrhy předplatného – SubTrack</title>
+</head>
+<body>
+    <div class="preview-container">
+        <h1 class="page-title">Přehled předplatných z výpisu</h1>
+        <p class="subtitle">
+            Zkontroluj, co jsme našli, a ulož jen to, co chceš přidat.
+        </p>
+        <form action="/confirm_upload" method="post">
+            <input type="hidden" name="data" value='{{ subscriptions | tojson }}'>
+            <div class="subscription-list">
+                {% for sub in subscriptions %}
+                <div class="subscription-row">
+                    <label class="checkbox-column">
+                        <input type="checkbox" name="selected" value="{{ loop.index0 }}" checked>
+                    </label>
+                    <div class="subscription-main">
+                        <div class="subscription-title">{{ sub.name }}</div>
+                        <div class="subscription-sub">{{ sub.price }} Kč / {{ sub.billing_cycle }}</div>
+                    </div>
+                    <div class="subscription-details">
+                        <div class="detail-item">{{ sub.category }}</div>
+                        <div class="detail-item">{{ sub.start_date.strftime('%d.%m.%Y') if sub.start_date else '-' }}</div>
+                        <div class="detail-item notes">{{ sub.notes }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="save-btn btn-analyze">Uložit vybrané záznamy</button>
+        </form>
+    </div>
+    <script>
+        // Select all checkbox functionality
+        const selectAllCheckbox = document.getElementById('select-all');
+        const checkboxes = document.querySelectorAll('input[name="selected"]');
+
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', () => {
+                checkboxes.forEach(cb => {
+                    cb.checked = selectAllCheckbox.checked;
+                });
+            });
+
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    if (!cb.checked) {
+                        selectAllCheckbox.checked = false;
+                    } else {
+                        const allChecked = Array.from(checkboxes).every(c => c.checked);
+                        selectAllCheckbox.checked = allChecked;
+                    }
+                });
+            });
+        }
+    </script>
+
+    <!-- Toast Notification System -->
+    <script src="{{ url_for('static', filename='js/toast.js') }}?v=2"></script>
+    
+    <!-- Particle System -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}?v=4"></script>
+    
+    <!-- Show flash message if available -->
+    {% if flash_message %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.toast.show('{{ flash_message }}', '{{ flash_type or "info" }}');
+        });
+    </script>
+    {% endif %}
+
+</body>
+</html>

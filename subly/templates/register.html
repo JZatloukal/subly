@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrace – Subly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}?v=6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}?v=6">
+</head>
+<body class="auth-page">
+    <div class="login-container">
+        <h1 class="page-title">Registrace</h1>
+        
+        
+        <form action="/register" method="POST">
+            <div class="input-group">
+                <input type="text" name="name" placeholder="Jméno" required>
+            </div>
+            <div class="input-group">
+                <input type="email" name="email" placeholder="E-mail" required>
+            </div>
+            <div class="input-group password-group">
+                <input type="password" name="password" placeholder="Heslo" required>
+                <div class="tooltip-box" id="password-tooltip">
+                  Heslo musí mít alespoň 8 znaků, jedno velké písmeno, jedno malé písmeno a jedno číslo.
+                </div>
+                <span class="toggle-password" onclick="togglePasswordVisibility()" aria-label="Zobrazit heslo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#555" viewBox="0 0 24 24">
+                      <path d="M12 5c-7.633 0-12 7-12 7s4.367 7 12 7 12-7 12-7-4.367-7-12-7zm0 12c-2.762 0-5-2.239-5-5s2.238-5 5-5 5 2.239 5 5-2.238 5-5 5zm0-8c-1.657 0-3 1.346-3 3s1.343 3 3 3 3-1.346 3-3-1.343-3-3-3z"/>
+                    </svg>
+                </span>
+            </div>
+            <div class="input-group password-group">
+                <input type="password" name="confirm_password" placeholder="Potvrďte heslo" required>
+                <span class="toggle-password" onclick="toggleConfirmPasswordVisibility()" aria-label="Zobrazit potvrzení hesla">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#555" viewBox="0 0 24 24">
+                      <path d="M12 5c-7.633 0-12 7-12 7s4.367 7 12 7 12-7 12-7-4.367-7-12-7zm0 12c-2.762 0-5-2.239-5-5s2.238-5 5-5 5 2.239 5 5-2.238 5-5 5zm0-8c-1.657 0-3 1.346-3 3s1.343 3 3 3 3-1.346 3-3-1.343-3-3-3z"/>
+                    </svg>
+                </span>
+            </div>
+            <button type="submit" class="register-button">
+                Zaregistrovat se
+            </button>
+        </form>
+        
+        <div class="register-link">
+            Už máte účet? <a href="/login">Přihlaste se</a>
+        </div>
+    </div>
+<script>
+const form = document.querySelector("form");
+const body = document.body;
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    body.classList.add("login-transition-out");
+    setTimeout(() => form.submit(), 1000);
+});
+function togglePasswordVisibility() {
+    const input = document.querySelector('input[name="password"]');
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+}
+function toggleConfirmPasswordVisibility() {
+    const input = document.querySelector('input[name="confirm_password"]');
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+}
+</script>
+<script>
+const passwordInput = document.querySelector('input[name="password"]');
+const tooltip = document.getElementById("password-tooltip");
+
+function validatePassword(value) {
+    const hasLength = value.length >= 8;
+    const hasUppercase = /[A-Z]/.test(value);
+    const hasLowercase = /[a-z]/.test(value);
+    const hasNumber = /\d/.test(value);
+
+    return hasLength && hasUppercase && hasLowercase && hasNumber;
+}
+
+passwordInput.addEventListener("input", function () {
+    const value = passwordInput.value;
+    const isValid = validatePassword(value);
+
+    passwordInput.classList.toggle("valid", isValid);
+    passwordInput.classList.toggle("invalid", !isValid);
+
+    tooltip.classList.toggle("visible", !isValid);
+});
+
+passwordInput.addEventListener("blur", function () {
+    if (!passwordInput.value) {
+        passwordInput.classList.remove("valid", "invalid");
+        tooltip.classList.remove("visible");
+    }
+});
+
+const confirmPasswordInput = document.querySelector('input[name="confirm_password"]');
+
+function validatePasswordMatch() {
+    const passwordsMatch = passwordInput.value === confirmPasswordInput.value;
+
+    confirmPasswordInput.classList.toggle("valid", passwordsMatch);
+    confirmPasswordInput.classList.toggle("invalid", !passwordsMatch);
+
+    return passwordsMatch;
+}
+
+confirmPasswordInput.addEventListener("input", validatePasswordMatch);
+passwordInput.addEventListener("input", validatePasswordMatch);
+
+confirmPasswordInput.addEventListener("blur", function () {
+    if (!confirmPasswordInput.value) {
+        confirmPasswordInput.classList.remove("valid", "invalid");
+    }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const flashMessages = document.querySelectorAll(".flash-message");
+  flashMessages.forEach((el) => {
+    setTimeout(() => {
+      el.style.opacity = "0";
+      setTimeout(() => {
+        el.style.display = "none";
+      }, 500);
+    }, 2500);
+  });
+});
+</script>
+
+<!-- Toast Notification System -->
+<script src="{{ url_for('static', filename='js/toast.js') }}?v=2"></script>
+
+<!-- Particle System -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}?v=4"></script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Výsledky detekce</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auto-detect-results.css') }}?v=8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}?v=6">
+</head>
+<body>
+    <div class="container">
+        <!-- Header s vysvětlením -->
+        <div class="results-header">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Výsledky automatické detekce</h2>
+            <p class="subtitle">Našli jsme <strong>{{ detected|length if detected else 0 }} předplatných</strong> ve vašich datech. Zkontrolujte je a vyberte ta, která chcete přidat do svého seznamu.</p>
+            
+            <!-- Statistiky -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">{{ detected|length if detected else 0 }}</div>
+                    <div class="stat-label">Nalezeno</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="selected-count">0</div>
+                    <div class="stat-label">Vybráno</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-cost">0 Kč</div>
+                    <div class="stat-label">Celkem/měsíc</div>
+                </div>
+            </div>
+        </div>
+
+        {% if detected and detected|length > 0 %}
+        <form method="POST" action="/auto-detect/save" id="results-form">
+            <div class="detected-list">
+                {% for sub in detected %}
+                <div class="detected-card" data-price="{{ sub.price }}">
+                    <div class="card-header">
+                        <div class="service-info">
+                            <div class="service-icon">
+                                <i class="fas fa-{{ 'music' if 'Spotify' in sub.name or 'Apple Music' in sub.name else 'play' if 'Netflix' in sub.name or 'Disney' in sub.name or 'YouTube' in sub.name else 'cloud' if 'iCloud' in sub.name else 'palette' if 'Adobe' in sub.name else 'file-alt' if 'Microsoft' in sub.name else 'star' }}"></i>
+                            </div>
+                            <div class="service-details">
+                                <h3 class="service-name">{{ sub.name }}</h3>
+                                <div class="service-category">{{ sub.category }}</div>
+                            </div>
+                        </div>
+                        <div class="price-section">
+                            <div class="price">{{ sub.price }} Kč</div>
+                            <div class="frequency">{{ sub.billing_cycle }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="detection-info">
+                            <div class="info-item">
+                                <i class="fas fa-search"></i>
+                                <span>Detekováno z bankovního výpisu</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>Pravidelná platba každý měsíc</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="selected_subs" value='{{ {"name": sub.name, "price": sub.price, "billing_cycle": sub.billing_cycle, "category": sub.category}|tojson }}' {% if sub.checked %}checked{% else %}{% endif %}>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                {% endfor %}
+            </div>
+            
+            <div class="submit-container">
+                <div class="selection-summary">
+                    <span id="selection-text">Vyberte předplatná pro přidání</span>
+                </div>
+                <button type="submit" class="btn-analyze" id="submit-btn" disabled>
+                    <i class="fas fa-plus"></i>
+                    <span>Přidat vybraná předplatná</span>
+                </button>
+            </div>
+        </form>
+        {% else %}
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Žádná předplatná nebyla nalezena</h3>
+                <p>V analyzovaných datech jsme nenašli žádná opakující se předplatná. Zkuste nahrát jiný bankovní výpis nebo přidejte předplatná ručně.</p>
+                <a href="/auto-detect" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Zkusit znovu
+                </a>
+            </div>
+        {% endif %}
+        
+        <!-- Tlačítko pro návrat na přehled -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{{ url_for('index') }}" class="back-button">
+                ← Zpět na přehled
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Interaktivní funkčnost
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const selectedCount = document.getElementById('selected-count');
+            const totalCost = document.getElementById('total-cost');
+            const selectionText = document.getElementById('selection-text');
+            const submitBtn = document.getElementById('submit-btn');
+            const cards = document.querySelectorAll('.detected-card');
+
+            function updateSelection() {
+                const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+                const count = checked.length;
+                let cost = 0;
+                
+                checked.forEach(checkbox => {
+                    const card = checkbox.closest('.detected-card');
+                    const price = parseInt(card.dataset.price);
+                    cost += price;
+                });
+
+                selectedCount.textContent = count;
+                totalCost.textContent = cost + ' Kč';
+                
+                if (count === 0) {
+                    selectionText.textContent = 'Vyberte předplatná pro přidání';
+                    submitBtn.disabled = true;
+                } else if (count === 1) {
+                    selectionText.textContent = '1 předplatné vybráno';
+                    submitBtn.disabled = false;
+                } else {
+                    selectionText.textContent = count + ' předplatných vybráno';
+                    submitBtn.disabled = false;
+                }
+
+                // Animace karet
+                cards.forEach(card => {
+                    const checkbox = card.querySelector('input[type="checkbox"]');
+                    if (checkbox.checked) {
+                        card.classList.add('selected');
+                    } else {
+                        card.classList.remove('selected');
+                    }
+                });
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelection);
+            });
+
+            // Inicializace
+            updateSelection();
+        });
+    </script>
+
+    <!-- Toast Notification System -->
+    <script src="{{ url_for('static', filename='js/toast.js') }}?v=2"></script>
+
+    <!-- Particle System -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}?v=4"></script>
+
+</body>
+</html>

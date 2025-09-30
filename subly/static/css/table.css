@@ -1,0 +1,149 @@
+/* =============================================================================
+   TABLE.CSS
+   =============================================================================
+   Tabulky a jejich styly
+   ============================================================================= */
+
+/* Table container */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Table headers */
+th {
+    padding: 12px 15px;
+    text-align: left;
+    background: #f4f6f8;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    color: #333;
+}
+
+th.checkbox-header {
+    width: 5%;
+    text-align: center;
+}
+
+th.name-header {
+    text-align: left;
+}
+
+th.price-header,
+th.frequency-header,
+th.category-header,
+th.start-header,
+th.actions-header {
+    width: 13%;
+    text-align: center;
+}
+
+/* Table rows */
+tr {
+    /* border-bottom: 1px solid #eee; */
+}
+
+tr:hover {
+    background: #f9fafc;
+    box-shadow: inset 0 0 0 9999px rgba(0,0,0,0.02);
+}
+
+/* Table cells */
+td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    line-height: 1.6;
+    border-bottom: 1px solid #eee;
+}
+
+td.checkbox-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+td.name-cell {
+    text-align: left;
+    vertical-align: middle;
+}
+
+td.price-cell,
+td.frequency-cell,
+td.category-cell,
+td.start-cell,
+td.actions-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Table text */
+.table-text {
+    display: inline-block;
+    padding: 0.3em 0.6em;
+    border-radius: 6px;
+    font-size: 0.8em;
+    font-weight: 500;
+    background: #fff;
+    border: 0.5px solid transparent;
+    color: #555;
+    text-align: center;
+    min-width: 60px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.table-text:hover {
+    border-color: #e8e8e8;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    cursor: default;
+}
+
+/* Action buttons container */
+.actions-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Icon buttons */
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f4f4f4;
+    color: #007aff;
+    font-size: 16px;
+    margin-right: 8px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.icon-btn:hover {
+    opacity: 0.8;
+}
+
+.icon-btn.delete {
+    background: #ffecec;
+    color: #ff3b30;
+}
+
+/* Service icon */
+.service-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    height: 20px;
+    width: auto;
+}
+
+/* Table wrapper */
+.table-wrapper {
+    margin-bottom: 2em;
+}

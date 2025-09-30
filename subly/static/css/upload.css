@@ -1,0 +1,186 @@
+/* =============================================================================
+   UPLOAD.CSS
+   =============================================================================
+   Upload modal styly
+   ============================================================================= */
+
+/* Upload modal */
+.modal-upload {
+    max-width: 500px;
+    padding: 2em;
+}
+
+/* Upload description */
+.upload-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 1.5em;
+    text-align: center;
+}
+
+
+/* File status */
+.file-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    margin-top: 1em;
+}
+
+/* Success icon */
+.success-icon {
+    display: none;
+    width: 20px;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310b981'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+    flex-shrink: 0;
+}
+
+/* Custom file upload - removed, using upload-text-link instead */
+
+/* Drag & Drop Upload Zone */
+.upload-text-link {
+    display: block;
+    width: 100%;
+    min-height: 120px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 16px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 2em 1em;
+    margin: 1em 0;
+}
+
+.upload-text-link::before {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 0.5em auto;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.upload-text-link::after {
+    content: 'Přetáhněte CSV soubor sem nebo klikněte pro výběr';
+    display: block;
+    color: #64748b;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.upload-text-link:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.upload-text-link:hover::before {
+    opacity: 1;
+    transform: scale(1.1);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+}
+
+.upload-text-link:hover::after {
+    color: #3b82f6;
+}
+
+.upload-text-link.dragover {
+    border-color: #10b981;
+    background: #ecfdf5;
+    transform: scale(1.02);
+}
+
+.upload-text-link.dragover::before {
+    content: '';
+    opacity: 1;
+    transform: scale(1.2);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310b981'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+}
+
+.upload-text-link.dragover::after {
+    content: 'Pustit soubor pro nahrání';
+    color: #10b981;
+}
+
+/* File input - hide completely */
+.file-input {
+    display: none !important;
+}
+
+/* Override modal styles for file input */
+.modal-content input[type="file"],
+.edit-modal input[type="file"] {
+    display: none !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+/* File name display */
+.file-name {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Success icon */
+.success-icon {
+    display: none;
+    font-size: 18px;
+    color: #28a745;
+    animation: pulse 1s ease infinite;
+}
+
+.success-icon.show {
+    display: inline-block;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Upload form - removed old styles that created gray box */
+
+#upload-button {
+    background: rgb(44, 62, 80);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1em 1.5em;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#upload-button:hover {
+    transform: translateY(-1px);
+}
+
+#file-upload-note {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 1em;
+}
+
+/* Modal content upload button */
+.modal-content #upload-button {
+    background: #2563eb !important;
+    color: white !important;
+}

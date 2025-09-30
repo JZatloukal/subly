@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Přihlášení – Subly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}?v=5">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}?v=6">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toast.css') }}?v=6">
+</head>
+<body class="auth-page">
+    <div class="login-container">
+      <h1 class="page-title">Přihlášení</h1>
+      
+      
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <input type="email" name="email" placeholder="E-mail" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" id="password" placeholder="Heslo" required>
+            </div>
+        <button type="submit" class="login-button">Přihlásit se</button>
+      </form>
+        <div class="register-link">
+            Ještě nemáte účet? <a href="/register">Zaregistrujte se</a>
+        </div>
+    </div>
+<script>
+const form = document.querySelector("form");
+const body = document.body;
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    body.classList.add("login-transition-out");
+    setTimeout(() => form.submit(), 1000);
+});
+</script>
+
+<!-- Toast Notification System -->
+<script src="{{ url_for('static', filename='js/toast.js') }}?v=2"></script>
+
+<!-- Particle System -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}?v=4"></script>
+
+</body>
+</html>

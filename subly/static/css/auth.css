@@ -1,0 +1,209 @@
+body.auth-page {
+    position: relative;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: rgb(44, 62, 80);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 2.5em 2em;
+    border-radius: 24px;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.45),
+        0 4px 6px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+h2 {
+    margin-top: 0;
+    font-size: 1.4em;
+    text-align: center;
+    margin-bottom: 1.4em;
+    background: linear-gradient(135deg, #6a85b6, #bac8e0, #e0c3fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+input {
+    padding: 0.9em;
+    font-size: 15px;
+    border: 1px solid #e5e5ea;
+    border-radius: 12px;
+    background-color: #f2f2f7;
+    width: 100%;
+    transition: border-color 0.2s, background-color 0.2s;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+input:focus {
+    outline: none;
+    border-color: #6a85b6; /* světle modrá z tvého designu */
+    background-color: #fff;
+}
+.register-link {
+    font-size: 14px;
+    margin-top: 1.5em;
+    color: #4a4a4a;
+    text-align: center;
+}
+.register-link a {
+    color: #3b536b;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 600;
+}
+.register-link a:hover {
+    color: #4c6e8e;
+}
+.login-caption {
+    font-size: 13px;
+    text-align: center;
+    color: #333;
+    opacity: 0.6;
+    margin-top: 1.2em;
+    font-style: italic;
+}
+.forgot-password {
+    font-size: 13px;
+    color: #666;
+    text-align: right;
+    margin-top: -0.5em;
+    margin-bottom: 1em;
+}
+.forgot-password a {
+    color: #3b536b;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+.forgot-password a:hover {
+    color: #4c6e8e;
+}
+
+/* Flash messages - styles moved to base.css */
+
+/* Page title */
+.page-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    color: #2c3e50;
+    letter-spacing: 0.3px;
+    margin-bottom: 30px;
+}
+
+/* Input groups */
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Password group */
+.password-group {
+    position: relative;
+}
+
+/* Toggle password */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+/* Tooltip box */
+.tooltip-box {
+    display: none;
+    position: absolute;
+    top: 105%;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    color: #333;
+}
+
+.tooltip-box.visible {
+    display: block;
+}
+
+/* Feedback icon */
+.feedback-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.feedback-icon.visible {
+    opacity: 1;
+}
+
+/* Input validation */
+.input-group input.valid {
+    border: 1px solid green;
+}
+
+.input-group input.invalid {
+    border: 1px solid red;
+}
+
+/* Login and Register buttons - identické styly */
+.login-button,
+.register-button {
+    background: rgb(44, 62, 80);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 14px 0;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.login-button:hover,
+.register-button:hover {
+    transform: translateY(-1px);
+}
+
+/* Fade out animation */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

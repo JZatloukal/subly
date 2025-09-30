@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stránka nenalezena – Subly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #3b536b, #4c6e8e, #5c7d96, #6c8ba4);
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .error-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3em;
+            border-radius: 24px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            max-width: 500px;
+            margin: 2em;
+        }
+        
+        .error-code {
+            font-size: 4em;
+            font-weight: 700;
+            color: #4c6e8e;
+            margin: 0;
+        }
+        
+        .error-message {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #333;
+            margin: 0.5em 0;
+        }
+        
+        .error-description {
+            color: #666;
+            margin: 1em 0 2em;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #4c6e8e, #5c7d96);
+            color: white;
+            border: none;
+            padding: 1em 2em;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-message">Stránka nenalezena</h2>
+        <p class="error-description">
+            Omlouváme se, ale stránka kterou hledáte neexistuje nebo byla přesunuta.
+        </p>
+        <a href="/" class="btn">Zpět na hlavní stránku</a>
+    </div>
+</body>
+</html>

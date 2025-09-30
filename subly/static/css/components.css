@@ -1,0 +1,293 @@
+/* =============================================================================
+   COMPONENTS.CSS
+   =============================================================================
+   Komponenty a opakující se elementy
+   ============================================================================= */
+
+/* Logo komponenta */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 80px;
+    display: block;
+    margin-left: 10px;
+}
+
+.logo-text {
+    font-size: 1.8em;
+    font-weight: 700;
+    background: linear-gradient(to right, #ffffff, #cce6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Page title komponenta */
+.page-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+/* Content box komponenta */
+.content-box {
+    background: #fff;
+    padding: 2em;
+    border-radius: 24px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    margin-top: 2em;
+}
+
+/* Add subscription box komponenta */
+.add-subscription-box {
+    background: #f9f9fb;
+    padding: 2em;
+    border-radius: 24px;
+    box-shadow: none;
+    margin-bottom: 2em;
+    transition: transform 0.2s ease;
+}
+
+.add-subscription-box:hover {
+    transform: scale(1.01);
+}
+
+/* Button komponenty */
+.btn {
+    display: inline-block;
+    padding: 0.6em 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    line-height: 1.4;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 1em;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #1e4ed8;
+}
+
+.btn-secondary {
+    background: #f2f3f5;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-gradient {
+    background: rgb(44, 62, 80);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1em;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-1px);
+}
+
+.btn-analyze {
+    background: rgb(44, 62, 80);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1em;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1.5em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-analyze:hover {
+    transform: translateY(-1px);
+}
+
+/* Gradient animated button */
+.btn-gradient-animated {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 1em;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 15px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-gradient-animated:hover {
+    background: #1e4ed8;
+}
+
+/* Add subscription button */
+#add-subscription-btn {
+    background: #6a85b6;
+    color: white;
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+#add-subscription-btn:hover {
+    background: #547bbd;
+}
+
+/* Floating delete button */
+.floating-delete-btn {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(to right, #4a6b8a, #3a5a7a);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 32px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 1000;
+}
+
+.floating-delete-btn:hover {
+    background: linear-gradient(to right, #4b6881, #324b5e);
+}
+
+/* Number input styling */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Avatar */
+.avatar {
+    display: block;
+    margin-bottom: 0.25em;
+}
+
+/* Form komponenty */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #6a85b6;
+    box-shadow: 0 0 0 3px rgba(106, 133, 182, 0.1);
+}
