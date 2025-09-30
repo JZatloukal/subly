@@ -748,9 +748,16 @@ app = create_app()
 
 if __name__ == "__main__":
     with app.app_context():
-        # Create tables if they don't exist
-        db.create_all()
-        logger.info("Database tables created/verified")
+        # Run migrations for production
+        from flask_migrate import upgrade
+        try:
+            upgrade()
+            logger.info("Database migrations completed successfully")
+        except Exception as e:
+            logger.error(f"Migration error: {e}")
+            # Fallback to create_all for development
+            db.create_all()
+            logger.info("Database tables created/verified (fallback)")
     
     # Run app
     app.run(
