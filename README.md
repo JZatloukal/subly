@@ -43,24 +43,15 @@
 
 ---
 
-## 📷 Ukázky obrazovek
-
-| Přihlášení | Dashboard | Přidání předplatného |
-|-----------|-----------|-----------------------|
-| ![](screenshots/login.png) | ![](screenshots/dashboard.png) | ![](screenshots/add_subscription.png) |
-
----
-
 ## 🚀 Plánované funkce
 
 - Notifikace na trial verze
-- Dark mode (s možností přepnutí)
+- Light mode (s možností přepnutí)
 - Chytré návrhy alternativ (např. levnější varianty)
 - Možnost změny měny (CZK, EUR, USD...)
 - Timeline plateb (grafické znázornění historie)
 - Statistiky výdajů podle kategorií
 - Připojení kalendářových notifikací (např. Google Calendar API)
-- Automatické ikonky podle služby (Netflix, Spotify, atd.) – částečně hotovo (24 ikon)
 - PWA / mobilní aplikace (React Native nebo Swift)
 - Sdílení předplatného mezi více uživateli (rodinný režim)
 - Lokalizace do angličtiny (i18n)
