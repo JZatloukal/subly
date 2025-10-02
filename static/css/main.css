@@ -35,15 +35,15 @@
 }
 
 .summary-box:nth-child(1) { 
-    border-top: 4px solid #b7e4c7; /* světle zelená */
+    border-top: 4px solid rgb(44, 62, 80);; 
 }
 
 .summary-box:nth-child(2) { 
-    border-top: 4px solid #a7c7e7; /* pastelově modrá */
+    border-top: 4px solid rgb(44, 62, 80);
 }
 
 .summary-box:nth-child(3) { 
-    border-top: 4px solid #f7d9a1; /* jemně oranžová */
+    border-top: 4px solid rgb(44, 62, 80);
 }
 
 /* Chart containers */
