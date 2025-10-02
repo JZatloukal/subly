@@ -80,7 +80,7 @@
 - [ ] Možnost smazání účtu
 - [ ] Obnova zapomenutého hesla
 - [ ] Statistiky a přehledy výdajů
-- [ ] Nasazení na veřejný hosting
+- [x] Nasazení na veřejný hosting
 
 ---
 

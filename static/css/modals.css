@@ -224,3 +224,8 @@
     margin-top: 2em;
     width: 100%;
 }
+
+#edit-category, #add-category {
+    pointer-events: none;   /* zakáže psaní / klikání */
+    opacity: 0.6;           /* lehce zašedlé, ať to působí jako disabled */
+}
