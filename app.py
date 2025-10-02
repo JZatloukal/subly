@@ -576,7 +576,7 @@ def create_app(config_name=None):
             log_user_action('user_logout', g.user.id)
         session.clear()
         return redirect(url_for("landing"))
-    
+        
     # Profile route
     @app.route("/profile", methods=["GET", "POST"])
     @login_required
@@ -763,6 +763,12 @@ if __name__ == "__main__":
             # Fallback to create_all for development
             db.create_all()
             logger.info("Database tables created/verified (fallback)")
+
+
+    @app.route("/author")
+    def author():
+        """Informace o autorovi aplikace"""
+        return render_template("author.html")
     
     # Run app
     app.run(
