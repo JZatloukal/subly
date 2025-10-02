@@ -98,10 +98,15 @@ def create_app(config_name=None):
     # Main dashboard route
     @app.route("/")
     def landing():
-        """Landing page pro nepřihlášené uživatele"""
+        """Landing page pro nepřihlášené uživatele, přihlášené přesměruje na dashboard"""
         if g.user:
             return redirect(url_for('index'))
         return render_template('landing.html')
+
+    @app.route("/about")
+    def about():
+        """Always render landing.html regardless of authentication"""
+        return render_template("landing.html")
     
     @app.route("/dashboard")
     @login_required
@@ -570,7 +575,7 @@ def create_app(config_name=None):
         if g.user:
             log_user_action('user_logout', g.user.id)
         session.clear()
-        return redirect(url_for("login"))
+        return redirect(url_for("landing"))
     
     # Profile route
     @app.route("/profile", methods=["GET", "POST"])

@@ -235,11 +235,16 @@
     top: 1.25rem;
     right: 1rem;
     cursor: pointer;
-    z-index: 1001;
-    color: #333;
-    background: none;
+    z-index: 1000;
+    color: white;
+    background: transparent;
     border: none;
     font-size: 24px;
+}
+
+.hamburger-menu:hover {
+    background: none;
+    transform: scale(1.1);
 }
 
 .hamburger-icon {
